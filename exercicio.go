@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strconv"
 	"strings"
 )
 
@@ -20,13 +21,19 @@ func main() {
 		log.Fatal("ReadAll():", err)
 	}
 
-	var accounts = make(map[string]string)
+	var accounts = make(map[string]int)
 
 	for _, tx := range records {
-		accounts[tx[0]] += tx[1]
-	}
 
-	for id, amount := range accounts {
-		fmt.Printf("(%v, %v) \n", id, amount)
+		valores, _ := strconv.Atoi(tx[1])
+
+		if accounts[tx[0]] == 0 {
+			accounts[tx[0]] = valores
+		} else {
+			accounts[tx[0]] = accounts[tx[0]] + valores
+		}
+	}
+	for id, balance := range accounts {
+		fmt.Printf("%v = %v \n", id, balance)
 	}
 }
